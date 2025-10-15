@@ -84,7 +84,7 @@ async def test_router(schedule: str = "round_robin", endpoints_config: str = "1t
         stream_options=openai_api_protocol.StreamOptions(include_usage=True),
     )
     if schedule == "round_robin":
-        async for chunk in router._handle_completion_round_robin(request, "1"):
+        async for chunk in router._handle_completion_round_robin(request):
             print(chunk)
     elif schedule == "disagg":
         async for chunk in router._handle_completion_disagg(request, "1"):
