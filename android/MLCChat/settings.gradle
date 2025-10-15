@@ -25,8 +25,8 @@ if (distMlc4j.exists()) {
 } else {
     throw new GradleException("Unable to locate the mlc4j module. Run `mlc_llm package` or ensure android/mlc4j is present.")
 }
-include ':mlcengineexample'
 def engineExampleDir = file('../MLCEngineExample')
 if (engineExampleDir.exists()) {
+    include ':mlcengineexample'
     project(':mlcengineexample').projectDir = engineExampleDir
 }
