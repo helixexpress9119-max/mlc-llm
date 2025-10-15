@@ -16,5 +16,16 @@ dependencyResolutionManagement {
 rootProject.name = "MLCChat"
 include ':app'
 include ':mlc4j'
-project(':mlc4j').projectDir = file('dist/lib/mlc4j')
+def packagedMlc4j = file('dist/lib/mlc4j')
+def sourceMlc4j = file('../mlc4j')
+
+if (packagedMlc4j.exists()) {
+    project(':mlc4j').projectDir = packagedMlc4j
+    println "Using prebuilt mlc4j artifacts from ${packagedMlc4j}"
+} else if (sourceMlc4j.exists()) {
+    project(':mlc4j').projectDir = sourceMlc4j
+    println "Using source mlc4j module from ${sourceMlc4j}"
+} else {
+    println "Warning: mlc4j module not found. Run mlc_llm package or prepare the source checkout."
+}
 include ':mlcengineexample'
