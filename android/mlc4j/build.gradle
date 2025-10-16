@@ -4,6 +4,11 @@ plugins {
     id 'org.jetbrains.kotlin.plugin.serialization' version '1.8.0'
 }
 
+def mlc4jOutputDir = file('output')
+def hasPrebuiltJars = mlc4jOutputDir.exists() && mlc4jOutputDir.listFiles({ file ->
+    file.name.endsWith('.jar')
+} as java.io.FileFilter)?.length
+
 android {
     namespace 'ai.mlc.mlcllm'
     compileSdk 34
@@ -21,12 +26,17 @@ android {
     sourceSets {
         main {
             jniLibs.srcDirs = ['output']
+            if (!hasPrebuiltJars) {
+                java.srcDir('src/stub/java')
+            }
         }
     }
 }
 
 dependencies {
-    implementation fileTree(dir: 'output', include: ['*.jar'])
+    if (hasPrebuiltJars) {
+        implementation fileTree(dir: 'output', include: ['*.jar'])
+    }
     implementation 'androidx.core:core-ktx:1.9.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
     implementation 'com.google.android.material:material:1.10.0'

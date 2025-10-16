@@ -16,5 +16,17 @@ dependencyResolutionManagement {
 rootProject.name = "MLCChat"
 include ':app'
 include ':mlc4j'
-project(':mlc4j').projectDir = file('dist/lib/mlc4j')
-include ':mlcengineexample'
+def distMlc4j = file('dist/lib/mlc4j')
+def sourceMlc4j = file('../mlc4j')
+if (distMlc4j.exists()) {
+    project(':mlc4j').projectDir = distMlc4j
+} else if (sourceMlc4j.exists()) {
+    project(':mlc4j').projectDir = sourceMlc4j
+} else {
+    throw new GradleException("Unable to locate the mlc4j module. Run `mlc_llm package` or ensure android/mlc4j is present.")
+}
+def engineExampleDir = file('../MLCEngineExample')
+if (engineExampleDir.exists()) {
+    include ':mlcengineexample'
+    project(':mlcengineexample').projectDir = engineExampleDir
+}
