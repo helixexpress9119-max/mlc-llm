@@ -36,7 +36,7 @@ class Router:  # pylint: disable=too-many-instance-attributes
         if ports is None:
             ports = [8080]
         if num_gpus is None:
-            num_gpus = [1]
+            num_gpus = [1] * len(hosts)
 
         self.router_mode = router_mode
         self.pd_balance_factor = pd_balance_factor
